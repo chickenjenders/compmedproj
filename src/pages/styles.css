@@ -64,3 +64,18 @@ button {
   cursor: pointer;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Subtle button shadow */
 }
+
+.form-button {
+  font-family: "Poppins", sans-serif;
+  background-color: #cc3f0c;
+  color: #f0f7f4;
+  border-radius: 8px;
+  width: 100px;
+  height: 30px;
+  margin-top: 20px;
+  font-size: 15px;
+}
+
+.form-button:hover {
+  background-color: #f3b144;
+}
