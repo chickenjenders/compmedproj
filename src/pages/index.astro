@@ -2,9 +2,15 @@
 import Layout from "../layouts/Layout.astro";
 import { qnaList } from "./questions.js";
 import "./styles.css";
+import "@fontsource/poppins";
+import { Image } from "astro:assets";
+import roamer from "../assets/Roamer.png";
 ---
 
-<Layout title="Welcome to Astro.">
+<Layout title="Roamer">
+  <Image src={roamer} alt="roamer logo" class="logo" />
+  <h1>Welcome to Roamer!</h1>
+  <h2>Complete the survey below to find out your next dream vacation!</h2>
   <form class="questions">
     {
       qnaList.map((qna, i) => {
@@ -23,5 +29,6 @@ import "./styles.css";
         );
       })
     }
+    <input type="submit" />
   </form>
 </Layout>

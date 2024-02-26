@@ -1,5 +1,66 @@
+/* General Styling */
 body {
-  font-family: "Arial", sans-serif;
-  background-color: #f0f0f0;
-  text-align: center;
+  font-family: "Poppins", sans-serif;
+  background-color: #f6e3c7; /* White background */
+  color: #333;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo {
+  height: 200px;
+  width: 200px;
+  display: flex;
+}
+
+h1 {
+  font-size: 3em;
+  margin-bottom: 0.5em;
+  color: #26532b; /* Orange for main title */
+}
+
+h2 {
+  font-size: 2em;
+  color: black; /* Yellow for subtitles */
+}
+
+/* Form & Questions */
+.questions {
+  max-width: 600px;
+  background-color: #f3b144;
+  padding: 30px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  border: 3px solid #cc3f0c; /* Pink border */
+}
+
+p {
+  /* Question Text */
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.answer {
+  margin-right: 10px;
+  accent-color: #ff9100; /* Orange for radio checks */
+}
+
+/* Button Styling */
+button {
+  background-color: #ffc0cb; /* Pink button */
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Subtle button shadow */
 }
