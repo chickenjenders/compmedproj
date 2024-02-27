@@ -5,12 +5,28 @@ import "./styles.css";
 import "@fontsource/poppins";
 import { Image } from "astro:assets";
 import roamer from "../assets/Roamer.png";
+
+import OpenAI from "openai";
+
+const openai = new OpenAI({
+  apiKey: "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",
+});
+
+async function main() {
+  const chatCompletion = await openai.chat.completions.create({
+    messages: [{ role: "user", content: "Say this is a test" }],
+    model: "gpt-3.5-turbo",
+  });
+  return chatCompletion.choices[0].message.content;
+}
+const yeet = await main();
 ---
 
 <Layout title="Roamer">
   <Image src={roamer} alt="roamer logo" class="logo" />
   <h1>Welcome to Roamer!</h1>
   <h2>Complete the survey below to find out your next dream vacation!</h2>
+  <p>{yeet}</p>
   <form class="questions">
     {
       qnaList.map((qna, i) => {
