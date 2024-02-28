@@ -12,32 +12,58 @@ const openai = new OpenAI({
   apiKey: "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",
 });
 
-async function main() {
-  const chatCompletion = await openai.chat.completions.create({
-    messages: [{ role: "user", content: "Say this is a test" }],
-    model: "gpt-3.5-turbo",
-  });
-  return chatCompletion.choices[0].message.content;
+async function generateDreamVacation(userResponses) {
+  try {
+    const chatCompletion = await openai.chat.completions.create({
+      messages: userResponses.map((response) => ({
+        role: "user",
+        content: response,
+      })),
+      model: "gpt-3.5-turbo",
+    });
+    const dreamVacation = chatCompletion.choices[0].message.content;
+    console.log("Generated dream vacation:", dreamVacation); // Log the generated dream vacation to the console
+    return dreamVacation;
+  } catch (error) {
+    console.error("Error generating dream vacation:", error);
+    return "Sorry, an error occurred while generating your dream vacation.";
+  }
 }
-const yeet = await main();
+
+async function handleSubmit(event) {
+  event.preventDefault();
+  const formData = new FormData(event.target);
+  const userResponses = [];
+  qnaList.forEach((qna, index) => {
+    const answer = formData.get(`answer_${index}`);
+    userResponses.push(answer);
+  });
+  const dreamVacation = await generateDreamVacation(userResponses);
+  document.getElementById("result").innerText = dreamVacation; // Update the result paragraph with the dream vacation
+}
 ---
 
 <Layout title="Roamer">
   <Image src={roamer} alt="roamer logo" class="logo" />
   <h1>Welcome to Roamer!</h1>
   <h2>Complete the survey below to find out your next dream vacation!</h2>
-  <p>{yeet}</p>
-  <form class="questions">
+  <form class="questions" onsubmit="handleSubmit">
     {
-      qnaList.map((qna, i) => {
+      qnaList.map((qna, questionIndex) => {
         return (
           <div>
             <p>{qna.question}</p>
-            {qna.answers.map((answer, i) => {
+            {qna.answers.map((answer, answerIndex) => {
+              const inputId = `answer_${questionIndex}_${answerIndex}`;
               return (
                 <div class="container">
-                  <input type="radio" class="answer" />
-                  <label>{answer}</label>
+                  <input
+                    type="radio"
+                    name={`answer_${questionIndex}`}
+                    id={inputId}
+                    value={answer}
+                  />
+                  <label for={inputId}>{answer}</label>
                 </div>
               );
             })}
@@ -47,4 +73,6 @@ const yeet = await main();
     }
     <input type="submit" class="form-button" />
   </form>
+  <p id="result"></p>
+  {/* Paragraph element to display the generated dream vacation */}
 </Layout>
