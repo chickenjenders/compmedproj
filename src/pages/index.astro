@@ -51,9 +51,10 @@ import pic from "../assets/roampic2.png";
 
   const systemContent = `
 Create a dream vacation plan considering the form responses and include the following:
-- Recommend a country and city anywhere in the world based on the user's preferences for landscapes, climate, accommodation style, vacation pace, etc.
+- Recommend a country and city anywhere in the world based on the user's preferences for every question in the form response.
 - Provide specific famous places or excursions to visit in that city or nearby areas. Highlight landmarks, natural wonders, cultural sites, or adventure activities based on the user's interests.
 - Suggest famous food or cuisine from the selected country that the user should try during their trip. Include recommendations for local dishes, street food, or dining experiences that align with the user's flavor preferences.
+Display the result to the user in an organized and clear response using a casual tone a travel agent would have with a client.
 `;
 
   const openai = new OpenAI({
