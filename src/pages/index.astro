@@ -30,8 +30,8 @@ import pic from "../assets/roampic2.png";
                   <input
                     type="radio"
                     class="answer"
-                    id={qna.question}
-                    name={answer}
+                    id={answer}
+                    name={qna.question}
                   />
                 </div>
               );
@@ -90,7 +90,7 @@ Create a dream vacation plan considering the form responses and include the foll
 
     answers.forEach((answer: HTMLInputElement) => {
       if (answer.checked) {
-        formResponse += "Q." + answer.id + "\nA." + answer.name + "\n";
+        formResponse += "Q." + answer.name + "\nA." + answer.id + "\n";
       }
     });
     console.log(formResponse);
