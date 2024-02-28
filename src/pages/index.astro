@@ -5,12 +5,18 @@ import "./styles.css";
 import "@fontsource/poppins";
 import { Image } from "astro:assets";
 import roamer from "../assets/Roamer.png";
+import mountain from "../assets/roampic.png";
+import pic from "../assets/roampic2.png";
 ---
 
 <Layout title="Roamer">
   <Image src={roamer} alt="roamer logo" class="logo" />
   <h1>Welcome to Roamer!</h1>
   <h2>Complete the survey below to find out your next dream vacation!</h2>
+  <div class="pics">
+    <Image src={mountain} alt="mountain" />
+    <Image src={pic} alt="pic" />
+  </div>
   <form class="questions">
     {
       qnaList.map((qna, i) => {
