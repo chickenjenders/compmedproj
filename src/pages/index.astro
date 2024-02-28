@@ -44,7 +44,7 @@ import pic from "../assets/roampic2.png";
   </form>
 
   <div class="result hidden">loading...</div>
-  <div class="loading"></div>
+  <div class="loading hidden"></div>
 </Layout>
 
 <script>
@@ -83,11 +83,13 @@ Display the result to the user in an organized and clear response using a casual
 
   let formResponse = "";
   const result = document.querySelector(".result");
+  const loader = document.querySelector(".loading");
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     form.classList.add("hidden");
     result.classList.remove("hidden");
+    loader.classList.remove("hidden");
 
     answers.forEach((answer: HTMLInputElement) => {
       if (answer.checked) {
@@ -98,5 +100,6 @@ Display the result to the user in an organized and clear response using a casual
 
     let res = await getGPTResponse(formResponse);
     result.innerHTML = res.choices[0].message.content;
+    loader.classList.add("hidden");
   });
 </script>
