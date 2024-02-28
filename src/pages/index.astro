@@ -43,7 +43,7 @@ import pic from "../assets/roampic2.png";
     <input type="submit" class="form-button" />
   </form>
 
-  <div class="result"></div>
+  <div class="result hidden"></div>
 </Layout>
 
 <script>
@@ -87,6 +87,8 @@ Create a dream vacation plan considering the form responses and include the foll
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    form.classList.add("hidden");
+    result.classList.remove("hidden");
 
     answers.forEach((answer: HTMLInputElement) => {
       if (answer.checked) {
