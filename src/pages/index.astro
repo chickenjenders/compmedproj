@@ -5,65 +5,28 @@ import "./styles.css";
 import "@fontsource/poppins";
 import { Image } from "astro:assets";
 import roamer from "../assets/Roamer.png";
-
-import OpenAI from "openai";
-
-const openai = new OpenAI({
-  apiKey: "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",
-});
-
-async function generateDreamVacation(userResponses) {
-  try {
-    const chatCompletion = await openai.chat.completions.create({
-      messages: userResponses.map((response) => ({
-        role: "user",
-        content: response,
-      })),
-      model: "gpt-3.5-turbo",
-    });
-    const dreamVacation = chatCompletion.choices[0].message.content;
-    console.log("Generated dream vacation:", dreamVacation); // Log the generated dream vacation to the console
-    return dreamVacation;
-  } catch (error) {
-    console.error("Error generating dream vacation:", error);
-    return "Sorry, an error occurred while generating your dream vacation.";
-  }
-}
-
-async function handleSubmit(event) {
-  event.preventDefault();
-  const formData = new FormData(event.target);
-  const userResponses = [];
-  qnaList.forEach((qna, index) => {
-    const answer = formData.get(`answer_${index}`);
-    userResponses.push(answer);
-  });
-  const dreamVacation = await generateDreamVacation(userResponses);
-  document.getElementById("result").innerText = dreamVacation; // Update the result paragraph with the dream vacation
-}
 ---
 
 <Layout title="Roamer">
   <Image src={roamer} alt="roamer logo" class="logo" />
   <h1>Welcome to Roamer!</h1>
   <h2>Complete the survey below to find out your next dream vacation!</h2>
-  <form class="questions" onsubmit="handleSubmit">
+  <form class="questions">
     {
-      qnaList.map((qna, questionIndex) => {
+      qnaList.map((qna, i) => {
         return (
           <div>
-            <p>{qna.question}</p>
-            {qna.answers.map((answer, answerIndex) => {
-              const inputId = `answer_${questionIndex}_${answerIndex}`;
+            <p id={qna.question}>{qna.question}</p>
+            {qna.answers.map((answer, i) => {
               return (
                 <div class="container">
+                  <label for={qna.question}>{answer}</label>
                   <input
                     type="radio"
-                    name={`answer_${questionIndex}`}
-                    id={inputId}
-                    value={answer}
+                    class="answer"
+                    id={qna.question}
+                    name={answer}
                   />
-                  <label for={inputId}>{answer}</label>
                 </div>
               );
             })}
@@ -73,6 +36,61 @@ async function handleSubmit(event) {
     }
     <input type="submit" class="form-button" />
   </form>
-  <p id="result"></p>
-  {/* Paragraph element to display the generated dream vacation */}
+
+  <div class="result"></div>
 </Layout>
+
+<script>
+  import OpenAI from "openai";
+
+  const systemContent = `
+Create a dream vacation plan considering the form responses and include the following:
+- Recommend a country and city based on the user's preferences for landscapes, climate, accommodation style, vacation pace, etc.
+- Provide specific famous places or excursions to visit in that city or nearby areas. Highlight landmarks, natural wonders, cultural sites, or adventure activities based on the user's interests.
+- Suggest famous food or cuisine from the selected country that the user should try during their trip. Include recommendations for local dishes, street food, or dining experiences that align with the user's flavor preferences.
+`;
+
+  const openai = new OpenAI({
+    apiKey: import.meta.env.PUBLIC_OPENAI,
+    dangerouslyAllowBrowser: true,
+  });
+
+  let res = "";
+
+  async function main(formResponse) {
+    const completion = await openai.chat.completions.create({
+      messages: [
+        {
+          role: "system",
+          content: systemContent,
+        },
+        {
+          role: "user",
+          content: formResponse,
+        },
+      ],
+      model: "gpt-3.5-turbo",
+    });
+
+    result.innerHTML = completion.choices[0].message.content;
+  }
+  const form = document.querySelector(".questions");
+  const answers = form.querySelectorAll(".answer");
+
+  let formResponse = "";
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    answers.forEach((answer: HTMLInputElement) => {
+      if (answer.checked) {
+        formResponse += "Q." + answer.id + "\nA." + answer.name + "\n";
+      }
+    });
+    console.log(formResponse);
+
+    await main(formResponse);
+  });
+
+  const result = document.querySelector(".result");
+</script>

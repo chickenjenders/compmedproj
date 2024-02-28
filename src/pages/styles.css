@@ -45,6 +45,8 @@ p {
 
 .container {
   display: flex;
+  flex-direction: row-reverse;
+  justify-content: start;
   align-items: center;
   margin-bottom: 8px;
 }
