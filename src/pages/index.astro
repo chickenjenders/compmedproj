@@ -43,7 +43,8 @@ import pic from "../assets/roampic2.png";
     <input type="submit" class="form-button" />
   </form>
 
-  <div class="result hidden"></div>
+  <div class="result hidden">loading...</div>
+  <div class="loading"></div>
 </Layout>
 
 <script>
@@ -62,10 +63,8 @@ Display the result to the user in an organized and clear response using a casual
     dangerouslyAllowBrowser: true,
   });
 
-  let res = "";
-
-  async function main(formResponse) {
-    const completion = await openai.chat.completions.create({
+  async function getGPTResponse(formResponse) {
+    return await openai.chat.completions.create({
       messages: [
         {
           role: "system",
@@ -78,13 +77,12 @@ Display the result to the user in an organized and clear response using a casual
       ],
       model: "gpt-3.5-turbo",
     });
-
-    result.innerHTML = completion.choices[0].message.content;
   }
   const form = document.querySelector(".questions");
   const answers = form.querySelectorAll(".answer");
 
   let formResponse = "";
+  const result = document.querySelector(".result");
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -98,8 +96,7 @@ Display the result to the user in an organized and clear response using a casual
     });
     console.log(formResponse);
 
-    await main(formResponse);
+    let res = await getGPTResponse(formResponse);
+    result.innerHTML = res.choices[0].message.content;
   });
-
-  const result = document.querySelector(".result");
 </script>
